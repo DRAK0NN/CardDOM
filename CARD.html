@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Информация о банковской карте</title>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+
+    .container {
+      display: flex;
+      align-items: flex-start;
+      margin: 20px;
+    }
+
+    .form-container {
+      width: 400px;
+      padding: 20px;
+      border: 1px solid #ccc;
+      margin-right: 20px;
+    }
+
+    .card-preview {
+      width: 300px;
+      height: 200px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      position: relative;
+      background-color: #f0f0f0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px;
+    }
+
+    .card-logo {
+      width: 50px;
+      height: 30px;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+
+    .card-bank {
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+
+    .card-number {
+      font-size: 1.5em;
+      letter-spacing: 2px;
+    }
+
+    .card-holder {
+      font-size: 1em;
+      text-transform: uppercase;
+    }
+
+    .card-expiry {
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="form-container">
+    <h2>Введите данные карты</h2>
+    <form id="cardForm">
+      <label for="bank">Название банка:</label>
+      <input type="text" id="bank" name="bank" required oninput="updateCardPreview()"><br><br>
+
+      <label for="paymentSystem">Тип платежной системы:</label>
+      <select id="paymentSystem" name="paymentSystem" required onchange="updateCardPreview()">
+        <option value="">Выберите систему</option>
+        <option value="visa">Visa</option>
+        <option value="mastercard">Mastercard</option>
+        <option value="mir">Мир</option>
+      </select><br><br>
+
+      <label for="cardNumber">Номер карты (16 цифр):</label>
+      <input type="text" id="cardNumber" name="cardNumber" maxlength="16" required oninput="updateCardPreview()"><br><br>
+
+      <label for="cardHolder">Имя держателя карты:</label>
+      <input type="text" id="cardHolder" name="cardHolder" required oninput="updateCardPreview()"><br><br>
+
+      <label for="expiryMonth">Месяц окончания:</label>
+      <select id="expiryMonth" name="expiryMonth" required onchange="updateCardPreview()">
+        <option value="">Месяц</option>
+        <option value="01">01</option>
+        <option value="02">02</option>
+        <option value="03">03</option>
+        <option value="04">04</option>
+        <option value="05">05</option>
+        <option value="06">06</option>
+        <option value="07">07</option>
+        <option value="08">08</option>
+        <option value="09">09</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+      </select>
+
+      <label for="expiryYear">Год окончания:</label>
+      <select id="expiryYear" name="expiryYear" required onchange="updateCardPreview()">
+        <option value="">Год</option>
+        <option value="2024">2024</option>
+        <option value="2025">2025</option>
+        <option value="2026">2026</option>
+        <option value="2027">2027</option>
+        <option value="2028">2028</option>
+      </select><br><br>
+    </form>
+  </div>
+
+  <div class="card-preview">
+    <div class="card-logo" id="cardLogo"></div>
+    <div class="card-bank" id="cardBank">Название банка</div>
+    <div class="card-number" id="cardNumberPreview">XXXX XXXX XXXX XXXX</div>
+    <div class="card-holder" id="cardHolderPreview">Имя ДЕРЖАТЕЛЯ</div>
+    <div class="card-expiry" id="cardExpiryPreview">MM/YY</div>
+  </div>
+</div>
+
+<script>
+  const bankInput = document.getElementById('bank');
+  const paymentSystemSelect = document.getElementById('paymentSystem');
+  const cardNumberInput = document.getElementById('cardNumber');
+  const cardHolderInput = document.getElementById('cardHolder');
+  const expiryMonthSelect = document.getElementById('expiryMonth');
+  const expiryYearSelect = document.getElementById('expiryYear');
+
+  const cardLogoDiv = document.getElementById('cardLogo');
+  const cardBankDiv = document.getElementById('cardBank');
+  const cardNumberPreviewDiv = document.getElementById('cardNumberPreview');
+  const cardHolderPreviewDiv = document.getElementById('cardHolderPreview');
+  const cardExpiryPreviewDiv = document.getElementById('cardExpiryPreview');
+
+
+  function updateCardPreview() {
+    cardBankDiv.textContent = bankInput.value || "Название банка";
+    cardNumberPreviewDiv.textContent = cardNumberInput.value || "XXXX XXXX XXXX XXXX";
+    cardHolderPreviewDiv.textContent = cardHolderInput.value.toUpperCase() || "Имя ДЕРЖАТЕЛЯ";
+    cardExpiryPreviewDiv.textContent = (expiryMonthSelect.value || "MM") + "/" + (expiryYearSelect.value || "YY").slice(-2);
+
+    //Update the Logo
+    switch (paymentSystemSelect.value) {
+      case "visa":
+        cardLogoDiv.innerHTML = '<img src="visa_logo.png" alt="Visa" style="width: 100%; height: 100%;">';
+        break;
+      case "mastercard":
+        cardLogoDiv.innerHTML = '<img src="mastercard_logo.png" alt="Mastercard" style="width: 100%; height: 100%;">';
+        break;
+      case "mir":
+        cardLogoDiv.innerHTML = '<img src="mir_logo.png" alt="Mir" style="width: 100%; height: 100%;">';
+        break;
+      default:
+        cardLogoDiv.innerHTML = '';
+    }
+  }
+
+
+  // Initial call to updateCardPreview on page load to set default values
+  updateCardPreview();
+</script>
+
+</body>
+</html>
